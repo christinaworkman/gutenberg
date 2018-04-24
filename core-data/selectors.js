@@ -138,3 +138,15 @@ export function getTaxonomies( state ) {
 export function getThemeSupports( state ) {
 	return state.themeSupports;
 }
+
+/**
+ * Returns the Post object by ID.
+ *
+ * @param {Object} state Data state.
+ * @param {number} id    Post ID.
+ *
+ * @return {Object?}     Post object.
+ */
+export function getPost( state, id ) {
+	return state.posts[ id ];
+}
