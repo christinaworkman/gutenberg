@@ -1,23 +1,36 @@
 /**
  * External dependencies
  */
-import { find, upperFirst, camelCase } from 'lodash';
+import { upperFirst, camelCase, map } from 'lodash';
 
-const entities = [
+/**
+ * WordPress dependencies
+ */
+import apiRequest from '@wordpress/api-request';
+
+export const defaultEntities = [
 	{ name: 'postType', kind: 'root', key: 'slug', baseUrl: '/wp/v2/types' },
 	{ name: 'media', kind: 'root', baseUrl: '/wp/v2/media' },
 ];
 
+export const kinds = [
+	{ name: 'postType', loadEntities: loadPostTypeEntities },
+];
+
 /**
- * Returns the entity object given its kind and name.
+ * Returns the list of post type entities.
  *
- * @param {string} kind  Entity kind.
- * @param {string} name  Entity name.
- *
- * @return {Object} Entity
+ * @return {Array} entities
  */
-export function getEntity( kind, name ) {
-	return find( entities, { kind, name } );
+async function loadPostTypeEntities() {
+	const postTypes = await apiRequest( { path: '/wp/v2/types?context=edit' } );
+	return map( postTypes, ( postType, name ) => {
+		return {
+			kind: 'postType',
+			baseUrl: '/wp/v2/' + postType.rest_base,
+			name,
+		};
+	} );
 }
 
 /**
@@ -33,5 +46,3 @@ export const getMethodName = ( kind, name ) => {
 	const nameSuffix = upperFirst( camelCase( name ) );
 	return `get${ kindPrefix }${ nameSuffix }`;
 };
-
-export default entities;
