@@ -1,0 +1,105 @@
+.editor-guide-tip {
+	$indicator-size: 8px;     // Size of the indicator dot
+	$indicator-scale: 3;      // How much the pulse animation should scale up by in size
+	$indicator-spacing: -5px; // Distance between edge of the buton and the indicator dot
+	$content-spacing: 20px;   // Distance between indicator dot and the content
+
+	position: fixed;
+	z-index: z-index( '.components-popover' );
+
+	&:before, &:after {
+		border-radius: 100%;
+		content: ' ';
+		pointer-events: none;
+		position: absolute;
+	}
+
+	&:before {
+		animation: pulse 1.6s infinite cubic-bezier( 0.17, 0.67, 0.92, 0.62 );
+		background: rgba( $blue-medium-800, 0.9 );
+		height: $indicator-size * $indicator-scale;
+		top: -$indicator-size - ( $indicator-size / 2 );
+		transform: scale( ( 1 / $indicator-scale ) );
+		width: $indicator-size * $indicator-scale
+	}
+		
+	&:after {
+		background: $blue-medium-800;
+		height: $indicator-size;
+		top: -$indicator-size / 2;
+		width: $indicator-size;
+	}
+
+	@keyframes pulse {
+		100% {
+			background: rgba( $blue-medium-800, 0 );
+			transform: scale( 1 );
+		}
+	}
+
+	.editor-guide-tip__content {
+		background: $white;
+		border: 1px solid $light-gray-500;
+		box-shadow: $shadow-popover;
+		left: 0;
+		margin-top: 20px;
+		padding: 5px ( 36px + 5px ) 5px 10px;
+		position: fixed;
+		right: 0;
+	}
+
+	.editor-guide-tip__close {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+
+	&.is-left {
+		&:before {
+			right: -$indicator-size - ( $indicator-size / 2 ) + $indicator-spacing;
+		}
+
+		&:after {
+			right: ( -$indicator-size / 2 ) + $indicator-spacing;
+		}
+	}
+
+	&.is-right {
+		&:before {
+			left: -$indicator-size - ( $indicator-size / 2 ) + $indicator-spacing;
+		}
+
+		&:after {
+			left: ( -$indicator-size / 2 ) + $indicator-spacing;
+		}
+	}
+
+	@include break-mobile {
+		.editor-guide-tip__content {
+			left: auto;
+			margin-top: auto;
+			position: absolute;
+			right: auto;
+			top: -20px;
+			width: 350px;
+		}
+
+		&.is-left {
+			.editor-guide-tip__content {
+				right: $indicator-spacing + $content-spacing;
+			}
+		}
+
+		&.is-right {
+			.editor-guide-tip__content {
+				left: $indicator-spacing + $content-spacing;
+			}
+		}
+	}
+
+	@include break-small {
+		.editor-guide-tip__content {
+			width: 450px;
+		}
+	}
+}

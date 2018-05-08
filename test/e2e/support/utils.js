@@ -61,6 +61,12 @@ export async function visitAdmin( adminPath, query ) {
 
 export async function newPost( postType ) {
 	await visitAdmin( 'post-new.php', postType ? 'post_type=' + postType : '' );
+
+	// Dismiss the new user guide if it is being shown
+	const guideTipCloseButton = await page.$( '.editor-guide-tip__close' );
+	if ( guideTipCloseButton ) {
+		await guideTipCloseButton.click();
+	}
 }
 
 export async function newDesktopBrowserPage() {
