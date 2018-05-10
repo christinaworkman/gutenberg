@@ -1,8 +1,12 @@
 /**
+ * External dependencies
+ */
+import { find } from 'lodash';
+
+/**
  * WordPress dependencies
  */
 import apiRequest from '@wordpress/api-request';
-import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -14,7 +18,7 @@ import {
 	receiveTaxonomies,
 	receiveThemeSupportsFromIndex,
 } from './actions';
-import { loadKindEntities } from './entities';
+import { getKindEntities } from './entities';
 
 /**
  * Requests categories from the REST API, yielding action objects on request
@@ -42,9 +46,8 @@ export async function* getAuthors() {
  * @param {number} key    Record's key
  */
 export async function* getEntityRecord( state, kind, name, key ) {
-	yield* loadKindEntities( state, kind );
-	// I can't use the state because it's outdated at this point
-	const entity = select( 'core' ).getEntity( kind, name );
+	const entities = yield* getKindEntities( state, kind );
+	const entity = find( entities, { kind, name } );
 	if ( ! entity ) {
 		return;
 	}
