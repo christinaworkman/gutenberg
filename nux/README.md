@@ -1,78 +1,86 @@
 NUX (New User eXperience)
 =========================
 
-The NUX module exposes components, and `wp.data` methods useful for onboarding a new user to the WordPress admin interface.
+The NUX module exposes components, and `wp.data` methods useful for onboarding a new user to the WordPress admin interface. Specifically, it exposes _tips_ and _guides_.
 
-Specifically, it allows a _guide_ to be presented. A guide is a series of _tips_ which the user steps through one by one. Each tip points to an element in the UI and contains text that explains the element's functionality. The user can dismiss the guide entirely which causes it to never show again. The guide's current state is persisted between sessions using `localStorage`.
+A _tip_ is a component that points to an element in the UI and contains text that explains the element's functionality. The user can dismiss a tip, in which case it never shows again. The user can also disable tips entirely. Information about tips is persisted between sessions using `localStorage`.
 
-## GuideTip
+A _guide_ allows a series of of tips to be presented to the user one by one. When a user dismisses a tip that is in a guide, the next tip in the guide is shown.
 
-`GuideTip` is a React component that renders a single _tip_ on the screen. The tip will point to the React element that `<GuideTip>` is nested within, and appears when the guide with the given `guideID` has been advanced to the specified `step`.
+## DotTip
 
-See [the component's README][guide-tip-readme] for more information.
+`DotTip` is a React component that renders a single _tip_ on the screen. The tip will point to the React element that `DotTip` is nested within. Each tip is uniquely identified by a string passed to `id`.
 
-[guide-tip-readme]: https://github.com/WordPress/gutenberg/tree/master/nux/components/guide-tip/README.md
+See [the component's README][dot-tip-readme] for more information.
+
+[dot-tip-readme]: https://github.com/WordPress/gutenberg/tree/master/nux/components/dot-tip/README.md
 
 ```jsx
-function MusicPlayer() {
-	return (
-		<div>
-			<button onClick={ ... }>
-				⏮
-				<GuideTip guideID="acme/music-player-guide" step={ 2 }>
-					Click here to play the previous song.
-				</GuideTip>
-			</button>
-			<button onClick={ ... }>
-				⏯	
-				<GuideTip guideID="acme/music-player-guide" step={ 1 }>
-					Click here to play or pause the song.
-				</GuideTip>
-			</button>
-			<button onClick={ ... }>
-				⏭	
-				<GuideTip guideID="acme/music-player-guide" step={ 3 }>
-					Click here to play the next song.
-				</GuideTip>
-			</button>
-		</div>
-	);
+<button onClick={ ... }>
+	Add to Cart
+	<DotTip id="acme/add-to-cart">
+		Click here to add the product to your shopping cart.
+	</DotTip>
+</button>
 }
 ```
 
-## Retrieving the current step
+## Determining if a tip is visible
 
-`getCurrentGuideStep` is a select method that allows you to determine what step number a guide is at. The current step is an integer ≥ 1. If `null` is returned, the guide has been dismissed.
+You can programmatically determine if a tip is visible using the `isTipVisible` select method.
 
 ```jsx
-const currentStep = select( 'core/nux' ).getCurrentGuideStep( 'acme/music-player-guide' );
-console.log( currentStep ); // 2
+const isVisible = select( 'core/nux' ).isTipVisible( 'acme/add-to-cart' );
+console.log( isVisible ); // true or false
 ```
 
-## Manually advancing a guide
+## Manually dismissing a tip
 
-`advanceGuide` is a dispatch method that allows you to manually advance a guide to the next step.
+`dismissTip` is a dispatch method that allows you to programmatically dismiss a tip.
 
 ```jsx
 <button
 	onClick={ () => {
-		dispatch( 'core/nux' ).advanceGuide( 'acme/music-player-guide' );
+		dispatch( 'core/nux' ).dismissTip( 'acme/add-to-cart' );
 	}
 >
-	Go to next step	
+	Dismiss tip
 </button>
 ```
 
-## Manually dismissing a guide
+## Manually disabling tips
 
-`advanceGuide` is a dispatch method that allows you to manually dismiss a guide.
+`disableTips` is a dispatch method that allows you to programmatically disable all tips.
 
 ```jsx
 <button
 	onClick={ () => {
-		dispatch( 'core/nux' ).dismissGuide( 'acme/music-player-guide' );
+		dispatch( 'core/nux' ).disableTips();
 	}
 >
-	Dismiss guide
+	Disable tips
 </button>
+```
+
+## Triggering a guide
+
+You can group a series of tips into a guide by calling the `triggerGuide` dispatch method. The given tips will then appear one by one.
+
+A tip cannot be added to more than one guide.
+
+```jsx
+domReady(() => {
+	dispatch( 'core/nux' ).triggerGuide( [ 'acme/product-info', 'acme/add-to-cart', 'acme/checkout' ] );
+} );
+```
+
+## Getting information about a guide
+
+`getAssociatedGuide` is a select method that returns useful information about the state of the guide that a tip is associated with.
+
+```jsx
+const guide = select( 'core/nux' ).getAssociatedGuide( 'acme/add-to-cart' );
+console.log( 'Tips in this guide:', guide.tipIDs );
+console.log( 'Currently showing:', guide.currentTipID );
+console.log( 'Next to show:', guide.nextTipID );
 ```

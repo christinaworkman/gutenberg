@@ -1,41 +1,41 @@
 /**
- * External dependencies
- */
-import { get } from 'lodash';
-
-/**
  * WordPress dependencies
  */
 import { combineReducers } from '@wordpress/data';
 
-export function currentGuideStep( state = {}, action ) {
+export function guides( state = [], action ) {
 	switch ( action.type ) {
-		case 'ADVANCE_GUIDE': {
-			const { id } = action;
-
-			const currentStep = get( state, [ id ], 1 );
-			if ( currentStep === null ) {
-				return state;
-			}
-
-			return {
+		case 'TRIGGER_GUIDE':
+			return [
 				...state,
-				[ id ]: currentStep + 1,
-			};
-		}
-
-		case 'DISMISS_GUIDE': {
-			const { id } = action;
-			return {
-				...state,
-				[ id ]: null,
-			};
-		}
+				action.tipIDs,
+			];
 	}
 
 	return state;
 }
 
-const preferences = combineReducers( { currentGuideStep } );
+export function areTipsDisabled( state = false, action ) {
+	switch ( action.type ) {
+		case 'DISABLE_TIPS':
+			return true;
+	}
 
-export default combineReducers( { preferences } );
+	return state;
+}
+
+export function dismissedTips( state = {}, action ) {
+	switch ( action.type ) {
+		case 'DISMISS_TIP':
+			return {
+				...state,
+				[ action.id ]: true,
+			};
+	}
+
+	return state;
+}
+
+const preferences = combineReducers( { areTipsDisabled, dismissedTips } );
+
+export default combineReducers( { guides, preferences } );

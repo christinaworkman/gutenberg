@@ -62,11 +62,10 @@ export async function visitAdmin( adminPath, query ) {
 export async function newPost( postType ) {
 	await visitAdmin( 'post-new.php', postType ? 'post_type=' + postType : '' );
 
-	// Dismiss the new user guide if it is being shown
-	const guideTipCloseButton = await page.$( '.editor-guide-tip__close' );
-	if ( guideTipCloseButton ) {
-		await guideTipCloseButton.click();
-	}
+	// Disable new user tips so that their UI doesn't get in the way
+	await page.evaluate( () => {
+		wp.data.dispatch( 'core/nux' ).disableTips();
+	} );
 }
 
 export async function newDesktopBrowserPage() {

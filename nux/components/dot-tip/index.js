@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { defer } from 'lodash';
+import { defer, partial } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -16,9 +16,9 @@ import { withSelect, withDispatch } from '@wordpress/data';
  */
 import './style.scss';
 
-const { Slot, Fill } = createSlotFill( 'GuideTip' );
+const { Slot, Fill } = createSlotFill( 'DotTip' );
 
-export class GuideTip extends Component {
+export class DotTip extends Component {
 	constructor() {
 		super( ...arguments );
 
@@ -34,11 +34,13 @@ export class GuideTip extends Component {
 	}
 
 	componentDidMount() {
-		defer( this.setPosition );
+		if ( this.props.isVisible ) {
+			defer( this.setPosition );
+		}
 	}
 
 	componentDidUpdate( prevProps ) {
-		if ( this.props.currentStep !== prevProps.currentStep ) {
+		if ( this.props.isVisible && ! prevProps.isVisible ) {
 			this.setPosition();
 
 			if ( this.advanceButtonRef.current ) {
@@ -70,10 +72,10 @@ export class GuideTip extends Component {
 	}
 
 	render() {
-		const { step, children, currentStep, onAdvance, onDismiss } = this.props;
+		const { children, isVisible, hasNextTip, onDismiss, onDisable } = this.props;
 		const { direction, position } = this.state;
 
-		if ( currentStep !== step ) {
+		if ( ! isVisible ) {
 			return null;
 		}
 
@@ -81,28 +83,28 @@ export class GuideTip extends Component {
 			<span ref={ this.anchorRef }>
 				<Fill>
 					<div
-						className={ `editor-guide-tip is-${ direction }` }
+						className={ `editor-dot-tip is-${ direction }` }
 						style={ position }
 						role="dialog"
 						aria-modal="true"
 						aria-label={ __( 'New User Guide' ) }
 					>
-						<div className="editor-guide-tip__content">
+						<div className="editor-dot-tip__content">
 							<p>{ children }</p>
 							<p>
 								<Button
 									ref={ this.advanceButtonRef }
 									isLink
-									onClick={ onAdvance }
+									onClick={ onDismiss }
 								>
-									{ __( 'Tell me more!' ) }
+									{ hasNextTip ? __( 'See next' ) : __( 'Got it' ) }
 								</Button>
 							</p>
 							<IconButton
 								icon="no-alt"
-								label={ __( 'Dismiss guide' ) }
-								className="editor-guide-tip__close"
-								onClick={ onDismiss }
+								label={ __( 'Disable guide' ) }
+								className="editor-dot-tip__close"
+								onClick={ onDisable }
 							/>
 						</div>
 					</div>
@@ -112,29 +114,27 @@ export class GuideTip extends Component {
 	}
 }
 
-const EnhancedGuideTip = compose(
-	withSelect( ( select, { guideID } ) => {
-		const { getCurrentGuideStep } = select( 'core/nux' );
+const EnhancedDotTip = compose(
+	withSelect( ( select, { id } ) => {
+		const { isTipVisible, getAssociatedGuide } = select( 'core/nux' );
+		const associatedGuide = getAssociatedGuide( id );
 		return {
-			currentStep: getCurrentGuideStep( guideID ),
+			isVisible: isTipVisible( id ),
+			hasNextTip: !! ( associatedGuide && associatedGuide.nextTipID ),
 		};
 	} ),
-	withDispatch( ( dispatch, { guideID } ) => {
-		const { advanceGuide, dismissGuide } = dispatch( 'core/nux' );
+	withDispatch( ( dispatch, { id } ) => {
+		const { dismissTip, disableTips } = dispatch( 'core/nux' );
 		return {
-			onAdvance() {
-				advanceGuide( guideID );
-			},
-			onDismiss() {
-				dismissGuide( guideID );
-			},
+			onDismiss: partial( dismissTip, id ),
+			onDisable: disableTips,
 		};
 	} ),
 	withGlobalEvents( {
 		resize: 'setPosition',
 	} ),
-)( GuideTip );
+)( DotTip );
 
-EnhancedGuideTip.Slot = Slot;
+EnhancedDotTip.Slot = Slot;
 
-export default EnhancedGuideTip;
+export default EnhancedDotTip;

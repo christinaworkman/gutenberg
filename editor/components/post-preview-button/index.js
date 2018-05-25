@@ -10,7 +10,7 @@ import { Component, compose } from '@wordpress/element';
 import { Button, ifCondition } from '@wordpress/components';
 import { __, _x } from '@wordpress/i18n';
 import { withSelect, withDispatch } from '@wordpress/data';
-import { GuideTip } from '@wordpress/nux';
+import { DotTip } from '@wordpress/nux';
 
 export class PostPreviewButton extends Component {
 	constructor() {
@@ -108,9 +108,9 @@ export class PostPreviewButton extends Component {
 				disabled={ ! isSaveable }
 			>
 				{ _x( 'Preview', 'imperative verb' ) }
-				<GuideTip guideID="core/editor" step={ 3 }>
+				<DotTip id="core/editor.preview">
 					{ __( 'Click ‘Preview’ to load a preview of this page, so you can make sure you’re happy with your blocks.' ) }
-				</GuideTip>
+				</DotTip>
 			</Button>
 		);
 	}

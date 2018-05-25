@@ -3,4 +3,4 @@
  */
 import './store';
 
-export { default as GuideTip } from './components/guide-tip';
+export { default as DotTip } from './components/dot-tip';

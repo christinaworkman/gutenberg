@@ -21,7 +21,6 @@ import { withDispatch, withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/element';
 import { PluginArea } from '@wordpress/plugins';
 import { withViewportMatch } from '@wordpress/viewport';
-import { GuideTip } from '@wordpress/nux';
 
 /**
  * Internal dependencies
@@ -99,7 +98,7 @@ function Layout( {
 			}
 			<Popover.Slot />
 			<PluginArea />
-			<GuideTip.Slot />
+			<DotTip.Slot />
 		</div>
 	);
 }

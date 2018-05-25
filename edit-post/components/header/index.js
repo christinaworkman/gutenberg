@@ -10,7 +10,7 @@ import {
 } from '@wordpress/editor';
 import { withDispatch, withSelect } from '@wordpress/data';
 import { compose } from '@wordpress/element';
-import { GuideTip } from '@wordpress/nux';
+import { DotTip } from '@wordpress/nux';
 
 /**
  * Internal dependencies
@@ -59,9 +59,9 @@ function Header( {
 						isToggled={ isEditorSidebarOpened }
 						aria-expanded={ isEditorSidebarOpened }
 					>
-						<GuideTip guideID="core/editor" step={ 2 }>
+						<DotTip id="core/editor.settings">
 							{ __( 'You’ll find more settings for your page and blocks in the sidebar. Click ‘Settings’ to open it.' ) }
-						</GuideTip>
+						</DotTip>
 					</IconButton>
 					<PinnedPlugins.Slot />
 					<MoreMenu />

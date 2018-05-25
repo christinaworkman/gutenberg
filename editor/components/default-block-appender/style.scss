@@ -49,8 +49,8 @@ $empty-paragraph-height: $text-editor-font-size * 4;
 		opacity: 1;
 	}
 
-	// Show the inserter if mousing over or there is a guide tip
-	&:not( .has-guide-tip ) {
+	// Show the inserter if mousing over or there is a tip
+	&:not( .has-tip ) {
 		.editor-inserter__toggle:not( [aria-expanded="true"] ) {
 			opacity: 0;
 		}

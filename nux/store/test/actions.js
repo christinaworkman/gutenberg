@@ -1,23 +1,31 @@
 /**
  * Internal dependencies
  */
-import { advanceGuide, dismissGuide } from '../actions';
+import { triggerGuide, dismissTip, disableTips } from '../actions';
 
 describe( 'actions', () => {
-	describe( 'advanceGuide', () => {
-		it( 'should return an ADVANCE_GUIDE action', () => {
-			expect( advanceGuide( 'test/guide' ) ).toEqual( {
-				type: 'ADVANCE_GUIDE',
-				id: 'test/guide',
+	describe( 'triggerGuide', () => {
+		it( 'should return a TRIGGER_GUIDE action', () => {
+			expect( triggerGuide( [ 'test/tip-1', 'test/tip-2' ] ) ).toEqual( {
+				type: 'TRIGGER_GUIDE',
+				tipIDs: [ 'test/tip-1', 'test/tip-2' ],
 			} );
 		} );
 	} );
 
-	describe( 'dismissGuide', () => {
-		it( 'should return an DISMISS_GUIDE action', () => {
-			expect( dismissGuide( 'test/guide' ) ).toEqual( {
-				type: 'DISMISS_GUIDE',
-				id: 'test/guide',
+	describe( 'dismissTip', () => {
+		it( 'should return an DISMISS_TIP action', () => {
+			expect( dismissTip( 'test/tip' ) ).toEqual( {
+				type: 'DISMISS_TIP',
+				id: 'test/tip',
+			} );
+		} );
+	} );
+
+	describe( 'disableTips', () => {
+		it( 'should return an DISABLE_TIPS action', () => {
+			expect( disableTips() ).toEqual( {
+				type: 'DISABLE_TIPS',
 			} );
 		} );
 	} );

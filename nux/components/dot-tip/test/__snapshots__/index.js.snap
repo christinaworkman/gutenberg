@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GuideTip should render correctly 1`] = `
+exports[`DotTip should render correctly 1`] = `
 <span>
-  <GuideTipFill>
+  <DotTipFill>
     <div
       aria-label="New User Guide"
       aria-modal="true"
-      className="editor-guide-tip is-right"
+      className="editor-dot-tip is-right"
       role="dialog"
       style={Object {}}
     >
       <div
-        className="editor-guide-tip__content"
+        className="editor-dot-tip__content"
       >
         <p>
           It looks like you’re writing a letter. Would you like help?
@@ -20,16 +20,16 @@ exports[`GuideTip should render correctly 1`] = `
           <Button
             isLink={true}
           >
-            Tell me more!
+            Got it
           </Button>
         </p>
         <IconButton
-          className="editor-guide-tip__close"
+          className="editor-dot-tip__close"
           icon="no-alt"
-          label="Dismiss guide"
+          label="Disable guide"
         />
       </div>
     </div>
-  </GuideTipFill>
+  </DotTipFill>
 </span>
 `;

@@ -1,29 +1,41 @@
 /**
- * Returns an action object that, when dispatched, advances the given guide to
- * the next step.
+ * Returns an action object that, when dispatched, presents a guide that takes
+ * the user through a series of tips step by step.
  *
- * @param {string} id The guide's unique identifier.
+ * @param {string[]} tipIDs Which tips to show in the guide.
  *
  * @return {Object} Action object.
  */
-export function advanceGuide( id ) {
+export function triggerGuide( tipIDs ) {
 	return {
-		type: 'ADVANCE_GUIDE',
+		type: 'TRIGGER_GUIDE',
+		tipIDs,
+	};
+}
+
+/**
+ * Returns an action object that, when dispatched, dismisses the given tip. A
+ * dismissed tip will not show again.
+ *
+ * @param {string} id The tip to dismiss.
+ *
+ * @return {Object} Action object.
+ */
+export function dismissTip( id ) {
+	return {
+		type: 'DISMISS_TIP',
 		id,
 	};
 }
 
 /**
- * Returns an action object that, when dispatched, dismisses the given guide so
- * that it won't display again.
- *
- * @param {string} id The guide's unique identifier.
+ * Returns an action object that, when dispatched, prevents all tips from
+ * showing again.
  *
  * @return {Object} Action object.
  */
-export function dismissGuide( id ) {
+export function disableTips() {
 	return {
-		type: 'DISMISS_GUIDE',
-		id,
+		type: 'DISABLE_TIPS',
 	};
 }

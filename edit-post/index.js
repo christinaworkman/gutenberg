@@ -3,6 +3,7 @@
  */
 import { registerCoreBlocks } from '@wordpress/core-blocks';
 import { render, unmountComponentAtNode } from '@wordpress/element';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -67,6 +68,13 @@ export function initializeEditor( id, post, settings ) {
 	const reboot = reinitializeEditor.bind( null, target, settings );
 
 	registerCoreBlocks();
+
+	dispatch( 'core/nux' ).triggerGuide( [
+		'core/editor.inserter',
+		'core/editor.settings',
+		'core/editor.preview',
+		'core/editor.publish',
+	] );
 
 	render(
 		<Editor settings={ settings } onError={ reboot } post={ post } />,

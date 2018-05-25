@@ -1,60 +1,50 @@
 /**
  * Internal dependencies
  */
-import { currentGuideStep } from '../reducer';
+import { guides, areTipsDisabled, dismissedTips } from '../reducer';
 
 describe( 'reducer', () => {
-	describe( 'currentGuideStep', () => {
-		it( 'should default to an empty object', () => {
-			expect( currentGuideStep( undefined, {} ) ).toEqual( {} );
+	describe( 'guides', () => {
+		it( 'should start out empty', () => {
+			expect( guides( undefined, {} ) ).toEqual( [] );
 		} );
 
-		it( 'should set the current step to 2 when advancing a guide that does not exist', () => {
-			const state = currentGuideStep( {}, {
-				type: 'ADVANCE_GUIDE',
-				id: 'test/guide',
+		it( 'should add a guide when it is triggered', () => {
+			const state = guides( [], {
+				type: 'TRIGGER_GUIDE',
+				tipIDs: [ 'test/tip-1', 'test/tip-2' ],
 			} );
-			expect( state ).toEqual( {
-				'test/guide': 2,
-			} );
+			expect( state ).toEqual( [
+				[ 'test/tip-1', 'test/tip-2' ],
+			] );
+		} );
+	} );
+
+	describe( 'areTipsDisabled', () => {
+		it( 'should default to false', () => {
+			expect( areTipsDisabled( undefined, {} ) ).toBe( false );
 		} );
 
-		it( 'should increment the current step when advancing a guide that exists', () => {
-			const initialState = {
-				'test/guide': 2,
-			};
-			const state = currentGuideStep( initialState, {
-				type: 'ADVANCE_GUIDE',
-				id: 'test/guide',
+		it( 'should flip when tips are disabled', () => {
+			const state = areTipsDisabled( false, {
+				type: 'DISABLE_TIPS',
 			} );
-			expect( state ).toEqual( {
-				'test/guide': 3,
-			} );
+			expect( state ).toBe( true );
+		} );
+	} );
+
+	describe( 'dismissedTips', () => {
+		it( 'should start out empty', () => {
+			expect( dismissedTips( undefined, {} ) ).toEqual( {} );
 		} );
 
-		it( 'should not increment the current step when the guide is dismissed', () => {
-			const initialState = {
-				'test/guide': null,
-			};
-			const state = currentGuideStep( initialState, {
-				type: 'ADVANCE_GUIDE',
-				id: 'test/guide',
+		it( 'should mark tips as dismissed', () => {
+			const state = dismissedTips( {}, {
+				type: 'DISMISS_TIP',
+				id: 'test/tip',
 			} );
 			expect( state ).toEqual( {
-				'test/guide': null,
-			} );
-		} );
-
-		it( 'should set the current step to null when the guide is dismissed', () => {
-			const initialState = {
-				'test/guide': 2,
-			};
-			const state = currentGuideStep( initialState, {
-				type: 'DISMISS_GUIDE',
-				id: 'test/guide',
-			} );
-			expect( state ).toEqual( {
-				'test/guide': null,
+				'test/tip': true,
 			} );
 		} );
 	} );

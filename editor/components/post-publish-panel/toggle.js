@@ -10,7 +10,7 @@ import { Button } from '@wordpress/components';
 import { compose } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { withSelect } from '@wordpress/data';
-import { GuideTip } from '@wordpress/nux';
+import { DotTip } from '@wordpress/nux';
 
 /**
  * Internal Dependencies
@@ -51,9 +51,9 @@ function PostPublishPanelToggle( {
 			isBusy={ isSaving && isPublished }
 		>
 			{ isBeingScheduled ? __( 'Schedule…' ) : __( 'Publish…' ) }
-			<GuideTip guideID="core/editor" step={ 4 }>
+			<DotTip id="core/editor.publish">
 				{ __( 'Finished writing? That’s great, let’s get this published right now. Just click ‘Publish’ and you’re good to go.' ) }
-			</GuideTip>
+			</DotTip>
 		</Button>
 	);
 }

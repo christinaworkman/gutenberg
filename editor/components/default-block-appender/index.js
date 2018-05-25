@@ -12,7 +12,7 @@ import { compose } from '@wordpress/element';
 import { getDefaultBlockName } from '@wordpress/blocks';
 import { decodeEntities } from '@wordpress/utils';
 import { withSelect, withDispatch } from '@wordpress/data';
-import { GuideTip } from '@wordpress/nux';
+import { DotTip } from '@wordpress/nux';
 
 /**
  * Internal dependencies
@@ -30,7 +30,7 @@ export function DefaultBlockAppender( {
 	placeholder,
 	layout,
 	rootUID,
-	currentGuideStep,
+	hasTip,
 } ) {
 	if ( isLocked || ! isVisible ) {
 		return null;
@@ -42,7 +42,7 @@ export function DefaultBlockAppender( {
 		<div
 			data-root-uid={ rootUID || '' }
 			className={ classnames( 'editor-default-block-appender', {
-				'has-guide-tip': currentGuideStep === 1,
+				'has-tip': hasTip,
 			} ) }>
 			<BlockDropZone rootUID={ rootUID } layout={ layout } />
 			<input
@@ -58,9 +58,9 @@ export function DefaultBlockAppender( {
 			/>
 			<InserterWithShortcuts rootUID={ rootUID } layout={ layout } />
 			<Inserter position="top right">
-				<GuideTip guideID="core/editor" step={ 1 }>
+				<DotTip id="core/editor.inserter">
 					{ __( 'Welcome to the wonderful world of blocks! Click ‘Add block’ to insert different kinds of content—text, images, quotes, video, lists, and much more.' ) }
-				</GuideTip>
+				</DotTip>
 			</Inserter>
 		</div>
 	);
@@ -68,7 +68,7 @@ export function DefaultBlockAppender( {
 export default compose(
 	withSelect( ( select, ownProps ) => {
 		const { getBlockCount, getBlock, getEditorSettings } = select( 'core/editor' );
-		const { getCurrentGuideStep } = select( 'core/nux' );
+		const { isTipVisible } = select( 'core/nux' );
 
 		const isEmpty = ! getBlockCount( ownProps.rootUID );
 		const lastBlock = getBlock( ownProps.lastBlockUID );
@@ -80,7 +80,7 @@ export default compose(
 			showPrompt: isEmpty,
 			isLocked: !! templateLock,
 			placeholder: bodyPlaceholder,
-			currentGuideStep: getCurrentGuideStep( 'core/editor' ),
+			hasTip: isTipVisible( 'core/editor.inserter' ),
 		};
 	} ),
 	withDispatch( ( dispatch, ownProps ) => {
