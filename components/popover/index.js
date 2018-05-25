@@ -39,6 +39,7 @@ class Popover extends Component {
 
 		this.focus = this.focus.bind( this );
 		this.getAnchorRect = this.getAnchorRect.bind( this );
+		this.updatePopoverSize = this.updatePopoverSize.bind( this );
 		this.computePopoverPosition = this.computePopoverPosition.bind( this );
 		this.throttledComputePopoverPosition = this.throttledComputePopoverPosition.bind( this );
 		this.maybeClose = this.maybeClose.bind( this );
@@ -190,7 +191,6 @@ class Popover extends Component {
 			children,
 			className,
 			onClickOutside = onClose,
-			noArrow = false,
 			// Disable reason: We generate the `...contentProps` rest as remainder
 			// of props which aren't explicitly handled by this component.
 			/* eslint-disable no-unused-vars */
@@ -212,6 +212,11 @@ class Popover extends Component {
 			popoverSize,
 			isMobile,
 		} = this.state;
+
+		let { noArrow = false } = this.props;
+		if ( xAxis === 'center' && yAxis === 'middle' ) {
+			noArrow = true;
+		}
 
 		const classes = classnames(
 			'components-popover',

@@ -39,11 +39,11 @@ exports[`DefaultBlockAppender should append a default block when input focused 1
   <WithSelect(WithDispatch(Inserter))
     position="top right"
   >
-    <WithSelect(WithDispatch(WithGlobalEvents(DotTip)))
+    <WithSelect(WithDispatch(DotTip))
       id="core/editor.inserter"
     >
       Welcome to the wonderful world of blocks! Click ‘Add block’ to insert different kinds of content—text, images, quotes, video, lists, and much more.
-    </WithSelect(WithDispatch(WithGlobalEvents(DotTip)))>
+    </WithSelect(WithDispatch(DotTip))>
   </WithSelect(WithDispatch(Inserter))>
 </div>
 `;
@@ -69,11 +69,11 @@ exports[`DefaultBlockAppender should match snapshot 1`] = `
   <WithSelect(WithDispatch(Inserter))
     position="top right"
   >
-    <WithSelect(WithDispatch(WithGlobalEvents(DotTip)))
+    <WithSelect(WithDispatch(DotTip))
       id="core/editor.inserter"
     >
       Welcome to the wonderful world of blocks! Click ‘Add block’ to insert different kinds of content—text, images, quotes, video, lists, and much more.
-    </WithSelect(WithDispatch(WithGlobalEvents(DotTip)))>
+    </WithSelect(WithDispatch(DotTip))>
   </WithSelect(WithDispatch(Inserter))>
 </div>
 `;
@@ -99,11 +99,11 @@ exports[`DefaultBlockAppender should optionally show without prompt 1`] = `
   <WithSelect(WithDispatch(Inserter))
     position="top right"
   >
-    <WithSelect(WithDispatch(WithGlobalEvents(DotTip)))
+    <WithSelect(WithDispatch(DotTip))
       id="core/editor.inserter"
     >
       Welcome to the wonderful world of blocks! Click ‘Add block’ to insert different kinds of content—text, images, quotes, video, lists, and much more.
-    </WithSelect(WithDispatch(WithGlobalEvents(DotTip)))>
+    </WithSelect(WithDispatch(DotTip))>
   </WithSelect(WithDispatch(Inserter))>
 </div>
 `;

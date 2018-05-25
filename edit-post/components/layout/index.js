@@ -98,7 +98,6 @@ function Layout( {
 			}
 			<Popover.Slot />
 			<PluginArea />
-			<DotTip.Slot />
 		</div>
 	);
 }
