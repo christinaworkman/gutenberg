@@ -122,7 +122,7 @@ We realize it's a big change. We also think there will be many new opportunities
 
 We are looking at ways to make Gutenberg configurable for many use cases, including disabling different aspects (like blocks, panels, etc.).
 
-There is also be a "Classic" block, which is virtually the same as the current editor, except in block form. There’s also likely to be a very popular plugin in the repository to replace Gutenberg with the classic editor.
+There will also be a "Classic" block, which is virtually the same as the current editor, except in block form. There’s also likely to be a very popular plugin in the repository to replace Gutenberg with the classic editor.
 
 ## How will custom TinyMCE buttons work in Gutenberg?
 
